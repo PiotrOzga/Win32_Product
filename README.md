@@ -1,2 +1,2 @@
-# ConsoleApp1
-read installed
+# Win32_Product
+read installed app
