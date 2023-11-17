@@ -35,20 +35,25 @@ namespace Win32_Product {
 
     private static void GetProducts(string arg) {
       Console.WriteLine("Please wait...");
-      StreamWriter StrWriter = new StreamWriter(string.Format(_fnFrmt, _prdType, DateTime.Now.ToString(_dtFrmt)), false, Encoding.UTF8);
-      ManagementObjectSearcher mos = new ManagementObjectSearcher(_qry);      
-      foreach (ManagementObject mo in mos.Get()) {
-        switch (arg) {
-          case "screen":
-            Console.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
-            break;
-          case "file":
-            StrWriter.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
-            break;
+      try {
+        StreamWriter StrWriter = new StreamWriter(string.Format(_fnFrmt, _prdType, DateTime.Now.ToString(_dtFrmt)), false, Encoding.UTF8);
+        ManagementObjectSearcher mos = new ManagementObjectSearcher(_qry);      
+        foreach (ManagementObject mo in mos.Get()) {
+          switch (arg) {
+            case "screen":
+              Console.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
+              break;
+            case "file":
+              StrWriter.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
+              break;
+          }
         }
+        Console.WriteLine("Done");
+      } catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } finnaly {
+        StrWriter.Close();
       }
-      StrWriter.Close();
-      Console.WriteLine("Done");
     }
   }
 }
