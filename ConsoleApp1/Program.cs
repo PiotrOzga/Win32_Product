@@ -5,36 +5,45 @@ using System.Text;
 
 namespace Win32_Product {
   class Program {
-    private static readonly string _productName = "{0} {1}";
+    private static readonly string _prdName = "{0} {1}";
+    private static readonly string _fnFrmt = "{0}_{1}.txt";
+    private static readonly string _prdType = "Win32_Product";
+    private static readonly string _errorArg = "Invalid args";
+    private static string _qry {
+      get {
+        return string.Format("SELECT * FROM {0}", _prdType);
+      }
+    }
+    private static readonly string _dtFrmt = "yyyyMMdd";
+
     static void Main(string[] args) {
       if (args.Length == 0) {
-        Console.WriteLine("Invalid args");
+        Console.WriteLine(_errorArg);
         return;
       }
       var command = args[0];
-
       switch (command) {
         case "screen":
         case "file":
           GetProducts(command);
           break;
         default:
-          Console.WriteLine("Invalid arg.");
+          Console.WriteLine(_errorArg);
           break;
       }
     }
 
     private static void GetProducts(string arg) {
       Console.WriteLine("Please wait...");
-      StreamWriter StrWriter = new StreamWriter(string.Format("Win32_Products_{0}.txt", DateTime.Now.ToString("yyyyMMdd")), false, Encoding.UTF8);
-      ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_Product");      
+      StreamWriter StrWriter = new StreamWriter(string.Format(_fnFrmt, _prdType, DateTime.Now.ToString(_dtFrmt)), false, Encoding.UTF8);
+      ManagementObjectSearcher mos = new ManagementObjectSearcher(_qry);      
       foreach (ManagementObject mo in mos.Get()) {
         switch (arg) {
           case "screen":
-            Console.WriteLine(string.Format(_productName, mo["Name"], mo["Version"]));
+            Console.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
             break;
           case "file":
-            StrWriter.WriteLine(string.Format(_productName, mo["Name"], mo["Version"]));
+            StrWriter.WriteLine(string.Format(_prdName, mo["Name"], mo["Version"]));
             break;
         }
       }
