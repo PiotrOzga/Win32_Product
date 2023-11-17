@@ -26,7 +26,7 @@ namespace Win32_Product {
 
     private static void GetProducts(string arg) {
       Console.WriteLine("Please wait...");
-      StreamWriter StrWrriter = new StreamWriter(string.Format("Win32_Products_{0}.txt", DateTime.Now.ToString("yyyyMMdd")), false, Encoding.UTF8);
+      StreamWriter StrWriter = new StreamWriter(string.Format("Win32_Products_{0}.txt", DateTime.Now.ToString("yyyyMMdd")), false, Encoding.UTF8);
       ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_Product");      
       foreach (ManagementObject mo in mos.Get()) {
         switch (arg) {
@@ -34,10 +34,11 @@ namespace Win32_Product {
             Console.WriteLine(string.Format(_productName, mo["Name"], mo["Version"]));
             break;
           case "file":
-            StrWrriter.WriteLine(string.Format(_productName, mo["Name"], mo["Version"]));
+            StrWriter.WriteLine(string.Format(_productName, mo["Name"], mo["Version"]));
             break;
         }
       }
+      StrWriter.Close();
       Console.WriteLine("Done");
     }
   }
