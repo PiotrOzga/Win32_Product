@@ -35,8 +35,8 @@ namespace Win32_Product {
 
     private static void GetProducts(string arg) {
       Console.WriteLine("Please wait...");
-      try {
-        StreamWriter StrWriter = new StreamWriter(string.Format(_fnFrmt, _prdType, DateTime.Now.ToString(_dtFrmt)), false, Encoding.UTF8);
+      StreamWriter StrWriter = new StreamWriter(string.Format(_fnFrmt, _prdType, DateTime.Now.ToString(_dtFrmt)), false, Encoding.UTF8);
+      try {        
         ManagementObjectSearcher mos = new ManagementObjectSearcher(_qry);      
         foreach (ManagementObject mo in mos.Get()) {
           switch (arg) {
@@ -51,7 +51,7 @@ namespace Win32_Product {
         Console.WriteLine("Done");
       } catch (Exception ex) {
         Console.WriteLine(ex.Message);
-      } finnaly {
+      } finally {
         StrWriter.Close();
       }
     }
